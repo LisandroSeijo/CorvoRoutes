@@ -29,6 +29,30 @@ class CorvoRoutesTests extends TestCase
         }
     }
 
+    public function testAlternativePaths()
+    {
+        $corvoRoute = new CorvoRoutes();
+        $corvoRoute->basePath(__DIR__.'/../AmazingSections')
+        ->alternativePaths(array(
+            __DIR__.'/../Alternative'
+        ))
+        ->load();
+
+        $routes = Route::getRoutes();
+        $alternativeRoute = false;
+
+        foreach(Route::getRoutes() as $route)
+        {
+            if ($route->getPath() == 'alternativeRoute')
+            {
+                $alternativeRoute = true;
+                break;
+            }
+        }
+
+        $this->assertTrue($alternativeRoute);
+    }
+
     public function testViewNamespaces()
     {
         $corvoRoute = new CorvoRoutes();
@@ -40,5 +64,22 @@ class CorvoRoutesTests extends TestCase
         $this->assertEquals(
             $data, "<h1>Admin's section</h1>"
         );
+    }
+
+    public function testAlternativeViewNamespaces()
+    {
+        $corvoRoute = new CorvoRoutes();
+        $corvoRoute->basePath(__DIR__.'/../AmazingSections')
+        ->alternativePaths(array(
+            __DIR__.'/../Alternative'
+        ))
+        ->load();
+
+        $response = $this->call('GET', '/alternativeView');
+        $data = $response->getContent();
+
+        $this->assertEquals(
+            $data, "<h1>Users section in alternative folder</h1>"
+        );   
     }
 }
