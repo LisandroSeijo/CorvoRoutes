@@ -279,4 +279,54 @@ class CorvoRoutes {
 
         return $this;
     }
+
+    /**
+     * Return base path location
+     * 
+     * @return string
+     */
+    public function getBasePath()
+    {
+        return $this->_basePath;
+    }
+
+    /**
+     * Return alternative paths
+     * 
+     * @return array
+     */
+    public function getAlternativePaths()
+    {
+        return $this->_alternativePaths;
+    }
+
+    /**
+     * Return routes filename
+     * 
+     * @return string
+     */
+    public function getRoutesFilename()
+    {
+        return $this->_routesFileName;
+    }
+
+    /**
+     * Return views folder
+     * 
+     * @return string
+     */
+    public function getViewsFolder()
+    {
+        return $this->_viewsFolder;
+    }
+
+    /**
+     * Return config name
+     * 
+     * @return string
+     */
+    public function getConfigName()
+    {
+        return $this->_configName;
+    }
 }
