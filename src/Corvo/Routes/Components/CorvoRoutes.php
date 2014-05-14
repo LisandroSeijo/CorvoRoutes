@@ -149,7 +149,7 @@ class CorvoRoutes {
                 {
                     $viewsNamespaces[] = array(
                         'path' => $view,
-                        'name' => $path
+                        'name' => $this->_viewFromAlternativePath($path)
                     );
                 }
             }
@@ -192,6 +192,20 @@ class CorvoRoutes {
                 $namespace['path']
             );
         }
+    }
+
+    /**
+     * Return the name of the destination folder
+     * 
+     * @param  string $path absolute path
+     * 
+     * @return string folder name
+     */
+    private function _viewFromAlternativePath($path)
+    {
+        $explodePath = explode('/', $path);
+
+        return $explodePath[count($explodePath)-1];
     }
 
     /**
