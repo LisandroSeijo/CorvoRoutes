@@ -48,15 +48,7 @@ class CorvoRoutes {
      */
     public function loadConfig()
     {
-        // Get default config
-        $defaultConfig = @include (__DIR__.'/../Config/config.php');
-        // Get user config
-        $userConfig = Config::get($this->_configName);
-
-        // Merge two arrays.
-        // If the user change one or more items of 
-        // the configurations his config prevails
-        $config = array_merge($defaultConfig, $userConfig);
+        $config = $this->getConfig();
 
         // If the var was set not use the configuration file,
         // this step is used for each var
@@ -76,6 +68,21 @@ class CorvoRoutes {
         array_merge($config['alternative_paths'], $this->_alternativePaths);
 
         return true;
+    }
+
+    public function getConfig()
+    {
+        // Get default config
+        $defaultConfig = @include (__DIR__.'/../Config/config.php');
+        // Get user config
+        $userConfig = Config::get($this->_configName);
+
+        // Merge two arrays.
+        // If the user change one or more items of 
+        // the configurations his config prevails
+        $config = array_merge($defaultConfig, $userConfig);
+
+        return $config;
     }
 
     /**
@@ -251,20 +258,6 @@ class CorvoRoutes {
     }
 
     /**
-     * Set config filename
-     * 
-     * @param  string $configName config name
-     * 
-     * @return Corvo\Routes\Components\CorvoRoutes
-     */
-    public function configName($configName)
-    {
-        $this->_configName = $configName;
-
-        return $this;    
-    }
-
-    /**
      * Add a single alternative path which contain a section
      * 
      * @param  string $path absolute path of the section
@@ -332,15 +325,5 @@ class CorvoRoutes {
     public function getViewsFolder()
     {
         return $this->_viewsFolder;
-    }
-
-    /**
-     * Return config name
-     * 
-     * @return string
-     */
-    public function getConfigName()
-    {
-        return $this->_configName;
     }
 }
