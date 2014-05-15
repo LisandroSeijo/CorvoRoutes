@@ -96,6 +96,8 @@ class CorvoRoutes {
         $routeFiles = array();
         // Contain views namespace and path to view folder
         $viewsNamespaces = array();
+        // Contain config namespaces and path to config folder
+        $configNamespaces = array();
 
         // Load configuration
         $this->loadConfig();
@@ -117,6 +119,8 @@ class CorvoRoutes {
                 $file = $this->_basePath.'/'.$path.'/'.$this->_routesFileName;
                 // Absolute path to views folder
                 $view = $this->_basePath.'/'.$path.'/'.$this->_viewsFolder;
+                // Absolute path to config folder
+                $config = $this->_basePath.'/'.$path.'/Config';
 
                 // Exists routes file?
                 if (is_file($file))
@@ -135,6 +139,16 @@ class CorvoRoutes {
                         'name' => $path
                     );
                 }
+
+                // Exists config folder?
+                if (is_dir($config))
+                {
+                    // Same method of views
+                    $configNamespaces[] = array(
+                        'path' => $config,
+                        'name' => $path
+                    );
+                }
             }
         }
 
@@ -146,6 +160,8 @@ class CorvoRoutes {
             {
                 $file = $path.'/'.$this->_routesFileName;
                 $view = $path.'/'.$this->_viewsFolder;
+                $config = $path.'/Config';
+                $namespace = $this->_viewFromAlternativePath($path);
 
                 if (is_file($file))
                 {
@@ -157,6 +173,14 @@ class CorvoRoutes {
                     $viewsNamespaces[] = array(
                         'path' => $view,
                         'name' => $this->_viewFromAlternativePath($path)
+                    );
+                }
+
+                if (is_dir($config))
+                {
+                    $configNamespaces[] = array(
+                        'path' => $config,
+                        'name' => $namespace
                     );
                 }
             }

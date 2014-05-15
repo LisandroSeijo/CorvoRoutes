@@ -29,6 +29,7 @@ class CreateSection {
         $controllers = $section.'/Controllers';
         $models = $section.'/Models';
         $views = $section.'/Views';
+        $config = $section.'/Config';
 
         if (!File::makeDirectory($section, $mode = 0777, true, true))
         {
@@ -53,6 +54,11 @@ class CreateSection {
         if (!File::makeDirectory($views, $mode = 0777, true, true))
         {
             throw new Exception('Error to create viws folder on '.$views);
+        }
+
+        if (!File::makeDirectory($config, $mode = 0777, true, true))
+        {
+            throw new Exception('Error to create config folder on '.$views);
         }
     }
 

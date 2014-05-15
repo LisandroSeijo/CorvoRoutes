@@ -18,7 +18,8 @@ class CreateSectionTest extends TestCase {
             'section'     => $section,
             'controllers' => $section.'/Controllers',
             'models'      => $section.'/Models',
-            'views'       => $section.'/Views'
+            'views'       => $section.'/Views',
+            'config'      => $section.'/Config'
         );
 
         $routeFile = $section.'/'.$config['routes_filename'];
