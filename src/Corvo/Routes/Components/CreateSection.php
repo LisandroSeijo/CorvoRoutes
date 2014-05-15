@@ -54,7 +54,7 @@ class CreateSection {
 
         if (!File::makeDirectory($views, $mode = 0777, true, true))
         {
-            throw new Exception('Error to create viws folder on '.$viws);
+            throw new Exception('Error to create viws folder on '.$views);
         }
 
         if (!File::makeDirectory($config, $mode = 0777, true, true))
