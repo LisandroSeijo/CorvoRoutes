@@ -1,6 +1,7 @@
 <?php namespace Corvo\Routes\Providers;
 
 use Corvo\Routes\Components\CorvoRoutes;
+use Corvo\Routes\Commands\CreateSectionCommand;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Foundation\AliasLoader;
 
@@ -18,5 +19,12 @@ class CorvoRoutesServiceProvider extends ServiceProvider {
             $loader = AliasLoader::getInstance();
             $loader->alias('CorvoRoutes', 'Corvo\Routes\Facades\CorvoRoutesFacade');
         });
+
+        $this->app['command.corvoroutes.createsection'] = $this->app->share(function($app)
+        {
+            return new CreateSectionCommand;
+        });
+
+        $this->commands('command.corvoroutes.createsection');
     }
 }
