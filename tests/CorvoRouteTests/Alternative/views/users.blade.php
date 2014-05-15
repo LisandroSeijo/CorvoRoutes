@@ -1,0 +1,1 @@
+<h1>Users section in alternative folder</h1>
