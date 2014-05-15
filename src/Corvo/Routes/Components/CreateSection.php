@@ -30,6 +30,7 @@ class CreateSection {
         $models = $section.'/Models';
         $views = $section.'/Views';
         $config = $section.'/Config';
+        $library = $section.'/Library';
 
         if (!File::makeDirectory($section, $mode = 0777, true, true))
         {
@@ -48,17 +49,22 @@ class CreateSection {
 
         if (!File::makeDirectory($models, $mode = 0777, true, true))
         {
-            throw new Exception('Error to create models folder on '.$section);
+            throw new Exception('Error to create models folder on '.$models);
         }
 
         if (!File::makeDirectory($views, $mode = 0777, true, true))
         {
-            throw new Exception('Error to create viws folder on '.$views);
+            throw new Exception('Error to create viws folder on '.$viws);
         }
 
         if (!File::makeDirectory($config, $mode = 0777, true, true))
         {
-            throw new Exception('Error to create config folder on '.$views);
+            throw new Exception('Error to create config folder on '.$config);
+        }
+
+        if (!File::makeDirectory($library, $mode = 0777, true, true))
+        {
+            throw new Exception('Error to create library folder on '.$library);
         }
     }
 
