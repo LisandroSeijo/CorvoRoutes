@@ -167,11 +167,16 @@ class CorvoRoutes {
 
         if (empty($this->_basePath))
         {
-            $this->loadConfig();
+            $config   = $this->getConfig();
+            $basePath = $config['base_path'];
+        }
+        else
+        {
+            $basePath = $this->_basePath;
         }
 
         // Open path which contain the sections
-        $sectionsDir = opendir($this->_basePath);
+        $sectionsDir = opendir($basePath);
 
         if ($sectionsDir)
         {
