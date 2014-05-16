@@ -102,7 +102,7 @@ class CorvoRoutes {
         // Load configuration
         $this->loadConfig();
 
-        // Open path which contain the content
+        // Open path which contain the sections
         $paths = opendir($this->_basePath);
 
         if ($paths)
@@ -115,15 +115,16 @@ class CorvoRoutes {
                     continue;
                 }
 
+                $section = $this->_basePath.'/'.$path;
                 // Absolute path to routes file
-                $file = $this->_basePath.'/'.$path.'/'.$this->_routesFileName;
+                $route = $section.'/'.$this->_routesFileName;
                 // Absolute path to views folder
-                $view = $this->_basePath.'/'.$path.'/'.$this->_viewsFolder;
+                $view = $section.'/'.$this->_viewsFolder;
                 // Absolute path to config folder
-                $config = $this->_basePath.'/'.$path.'/Config';
+                $config = $section.'/Config';
 
                 // Exists routes file?
-                if (is_file($file))
+                if (is_file($route))
                 {
                     $routeFiles[] = $file;
                 }
@@ -172,7 +173,7 @@ class CorvoRoutes {
                 {
                     $viewsNamespaces[] = array(
                         'path' => $view,
-                        'name' => $this->_viewFromAlternativePath($path)
+                        'name' => $namespace
                     );
                 }
 
