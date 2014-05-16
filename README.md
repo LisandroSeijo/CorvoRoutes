@@ -23,7 +23,7 @@ autoload {
     "classmap": [
       ...
     ],
-    psr-0: {
+    "psr-0": {
       "": "app/web"
     }
 }
@@ -98,7 +98,7 @@ Route::group(array('prefix' => 'blog'), function ()
     $posts = Blog\Models\Post::all();
     return View::make('Blog::index', ['posts' => $posts]);
   });
-}
+});
 ```
 The Blog namespace is already added, and we can use that for do refence to all Blogs views.
 
@@ -113,7 +113,7 @@ Route::group(array('prefix' => 'admin'), function ()
     $users = Admin\Models\Users::all();
     return View::make('Admin::users', ['users' => $users]);
   });
-}
+});
 ```
 
 To access to config files is the same way:
@@ -199,7 +199,7 @@ return array(
 );
 ```
 2) Using alternativePaths() method
-```
+```php
 /* proyect/app/routes.php */
 
 CorvoRoutes::alternativePaths(array(
