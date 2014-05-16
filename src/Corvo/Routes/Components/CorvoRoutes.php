@@ -104,24 +104,9 @@ class CorvoRoutes {
         // Load configuration
         $this->loadConfig();
 
-        // Open path which contain the sections
-        $sectionsDir = opendir($this->_basePath);
-
-        if ($sectionsDir)
-        {
-            // Iterate folders
-            while ($path = readdir($sectionsDir))
-            {
-                if ($path == '.' || $path == '..')
-                {
-                    continue;
-                }
-
-                $sections[] = $this->_basePath.'/'.$path;
-            }
-        }
-
-        $sections = array_merge($sections, $this->_alternativePaths);
+        $sections = array_merge(
+            $this->getSectionsPaths(), $this->_alternativePaths
+        );
 
         foreach($sections as $path)
         {
@@ -169,6 +154,35 @@ class CorvoRoutes {
         $this->_addViewNamespaces($viewsNamespaces);
         // Add config namespaces
         $this->_addConfigNamespaces($configNamespaces);
+    }
+
+    /**
+     * Return an array with sections path
+     * 
+     * @return array
+     */
+    public function getSectionsPaths()
+    {
+        $sections = array();
+
+        // Open path which contain the sections
+        $sectionsDir = opendir($this->_basePath);
+
+        if ($sectionsDir)
+        {
+            // Iterate folders
+            while ($path = readdir($sectionsDir))
+            {
+                if ($path == '.' || $path == '..')
+                {
+                    continue;
+                }
+
+                $sections[] = $this->_basePath.'/'.$path;
+            }
+        }
+
+        return $sections;
     }
 
     /**
