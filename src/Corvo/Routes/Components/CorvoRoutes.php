@@ -98,92 +98,68 @@ class CorvoRoutes {
         $viewsNamespaces = array();
         // Contain config namespaces and path to config folder
         $configNamespaces = array();
+        // Contain all sections
+        $sections = array();
 
         // Load configuration
         $this->loadConfig();
 
         // Open path which contain the sections
-        $paths = opendir($this->_basePath);
+        $sectionsDir = opendir($this->_basePath);
 
-        if ($paths)
+        if ($sectionsDir)
         {
             // Iterate folders
-            while ($path = readdir($paths))
+            while ($path = readdir($sectionsDir))
             {
                 if ($path == '.' || $path == '..')
                 {
                     continue;
                 }
 
-                $section = $this->_basePath.'/'.$path;
-                // Absolute path to routes file
-                $route = $section.'/'.$this->_routesFileName;
-                // Absolute path to views folder
-                $view = $section.'/'.$this->_viewsFolder;
-                // Absolute path to config folder
-                $config = $section.'/Config';
-
-                // Exists routes file?
-                if (is_file($route))
-                {
-                    $routeFiles[] = $file;
-                }
-
-                // Exists views folder?
-                if (is_dir($view))
-                {
-                    // To add views namespace we need two items:
-                    // 'path' is the absolute path to the view folder
-                    // 'name' is the root folder name of the section, and use this name to call the namespace
-                    $viewsNamespaces[] = array(
-                        'path' => $view,
-                        'name' => $path
-                    );
-                }
-
-                // Exists config folder?
-                if (is_dir($config))
-                {
-                    // Same method of views
-                    $configNamespaces[] = array(
-                        'path' => $config,
-                        'name' => $path
-                    );
-                }
+                $sections[] = $this->_basePath.'/'.$path;
             }
         }
 
-        // If has alternative paths add these too
-        if (!empty($this->_alternativePaths))
+        $sections = array_merge($sections, $this->_alternativePaths);
+
+        foreach($sections as $path)
         {
-            // Repeat the same method for each alternative path
-            foreach($this->_alternativePaths as $path)
+            // Absolute path to routes file
+            $file = $path.'/'.$this->_routesFileName;
+            // Absolute path to views folder
+            $view = $path.'/'.$this->_viewsFolder;
+            // Absolute path to config folder
+            $config = $path.'/Config';
+            // namespace
+            $namespace = $this->_viewFromAlternativePath($path);
+
+            // Exists routes file?
+            if (is_file($file))
             {
-                $file = $path.'/'.$this->_routesFileName;
-                $view = $path.'/'.$this->_viewsFolder;
-                $config = $path.'/Config';
-                $namespace = $this->_viewFromAlternativePath($path);
+                $routeFiles[] = $file;
+            }
 
-                if (is_file($file))
-                {
-                    $routeFiles[] = $file;
-                }
+            // Exists views folder?
+            if (is_dir($view))
+            {
+                // To add views namespace we need two items:
+                // 'path' is the absolute path to the view folder
+                // 'name' is the root folder name of the section, and use this name to call the namespace
+                $viewsNamespaces[] = array(
+                    'path' => $view,
+                    'name' => $namespace
+                );
+            }
 
-                if (is_dir($view))
-                {
-                    $viewsNamespaces[] = array(
-                        'path' => $view,
-                        'name' => $namespace
-                    );
-                }
-
-                if (is_dir($config))
-                {
-                    $configNamespaces[] = array(
-                        'path' => $config,
-                        'name' => $namespace
-                    );
-                }
+            // Exists config folder?
+            if (is_dir($config))
+            {
+                // Same method of views
+                $configNamespaces[] = array(
+                    'path' => $config,
+                    'name' => $namespace
+                );
             }
         }
         
@@ -191,6 +167,8 @@ class CorvoRoutes {
         $this->_includeRoutesFiles($routeFiles);
         // Add view namespaces
         $this->_addViewNamespaces($viewsNamespaces);
+        // Add config namespaces
+        $this->_addConfigNamespaces($configNamespaces);
     }
 
     /**
@@ -221,6 +199,24 @@ class CorvoRoutes {
         {
             View::addNamespace(
                 $namespace['name'], 
+                $namespace['path']
+            );
+        }
+    }
+
+    /**
+     * Add namespaces in the Illuminate\Support\Facades\Config class
+     * 
+     * @param  array $files array with absolute path to views path and name of the namespace
+     * 
+     * @return void
+     */
+    private function _addConfigNamespaces($configNamespaces)
+    {
+        foreach($configNamespaces as $namespace)
+        {
+            Config::addNamespace(
+                $namespace['name'],
                 $namespace['path']
             );
         }
