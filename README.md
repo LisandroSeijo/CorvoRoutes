@@ -6,6 +6,8 @@ If you wanna contribute, please, fork or open an [issue](https://github.com/Lisa
 If you have a question, sand me a [tweet](https://twitter.com/LisandroSeijo), or join on [Laraveles](http://laraveles.com/foro/) (Laravel in spanish).
 
 #How to use
+
+###Instalation
 Add `"corvo/router"` in your composer.json requires and run `composer update`.
 ```
 require {
@@ -68,7 +70,7 @@ You must have something like that:
 |--|--|--|--routes.php
 |--|--|--|--Views
 ```
-#Namespaces
+###Namespaces
 Now what we have the sections, go to create the views:
 ```php
 /* app/web/Blog/Views/index.blade.php */
@@ -140,3 +142,70 @@ To run this, we need load CorvoRoutes class. To do that, in the `proyect/app/rou
 CorvoRoutes::load();
 ```
 And that's all.
+
+#Advanced usage:
+
+###Configuration
+You can change the some features of CorvoRoutes like the path of sections, routes filename or the name of view folder.
+
+In your `proyect/app/config` folder create a new config file called `corvoroutes`
+```
+|--app
+|--|--config
+|--|--|--corvoroutes.php
+```
+In this file, you can change one or more features.
+
+Options:
+
+| Name | Description |
+| --- | --- |
+| base_path | Change the base path of your sections location |
+| alternative_paths | Array which contain the absolute path to other sections location |
+| routes_filename | Name of your routes file |
+| views_folder | Name of your views folder |
+
+For example, if you wanna change the views folder `/Views` for `/Templates`, only add this option:
+
+```php
+/* proyect/app/config/corvoroutes.php */
+
+return array(
+    'views_folder' => 'Templates'
+);
+```
+And change the `base_path`, you don't like `proyect/app/web` and think is better `proyect/content`:
+
+```php
+/* proyect/app/config/corvoroutes.php */
+
+return array(
+    'base_path'    => base_path().'/content',
+    'views_folder' => 'Templates'
+);
+```
+**Note:** if you change `base_path` and created previous sections in `proyect/app/web` you must move to the new base_path or add with `alternative_paths`
+
+###Alternative paths
+For add a section in other location like `proyect/content/Foro/` and `proyect/Users/` you have two was:
+
+1) Using config file:
+```php
+return array(
+    'alternative_paths' => array(
+        base_path().'/content/Foro',
+        base_path().'/Users'
+    )
+);
+```
+2) Using alternativePaths() method
+```
+/* proyect/app/routes.php */
+
+CorvoRoutes::alternativePaths(array(
+    base_path().'/content/Foro',
+    base_path().'/Users'
+))
+->load();
+```
+And each "alternative path" work like `proyect/app/web` sections.
