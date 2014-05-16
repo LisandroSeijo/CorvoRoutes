@@ -132,7 +132,7 @@ class CorvoRoutes {
             // Absolute path to config folder
             $config = $path.'/Config';
             // namespace
-            $namespace = $this->_viewFromAlternativePath($path);
+            $namespace = $this->_getNamespace($path);
 
             // Exists routes file?
             if (is_file($file))
@@ -229,7 +229,7 @@ class CorvoRoutes {
      * 
      * @return string folder name
      */
-    private function _viewFromAlternativePath($path)
+    private function _getNamespace($path)
     {
         $explodePath = explode('/', $path);
 
